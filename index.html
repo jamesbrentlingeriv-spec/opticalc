@@ -48,6 +48,7 @@
         body.dark-mode textarea {
             font-family: 'Courier New', Courier, monospace;
             text-shadow: 0 0 2px #1aff80;
+            color: #1aff80;
         }
 
         body.dark-mode .calculator,
@@ -334,8 +335,13 @@
                 <input type="number" id="power" step="0.25">
             </div>
             <div class="form-group">
-                <label>Lens Diameter (mm):</label>
+                <label>Lens Diameter or ED (mm):</label>
                 <input type="number" id="diameter" step="1">
+            </div>
+            <div class="form-group">
+                <label>Decentration per lens (mm):</label>
+                <input type="number" id="decentration" step="0.5" value="0">
+                <small style="opacity: 0.7; font-size: 11px;">Typically: (Frame PD - Patient PD) / 2</small>
             </div>
             <div class="form-group">
                 <label>Base/Min Thickness (mm):</label>
@@ -436,18 +442,19 @@
             let n = parseFloat(document.getElementById('index').value);
             let power = parseFloat(document.getElementById('power').value);
             let diameter = parseFloat(document.getElementById('diameter').value);
+            let dec = parseFloat(document.getElementById('decentration').value) || 0;
             let minThick = parseFloat(document.getElementById('minThick').value);
             let frameThicknessValue = parseFloat(document.getElementById('frameType').value);
 
-            // Use frameThicknessValue raw to differentiate styles
             let frameThickMm = (frameThicknessValue === 1.21) ? 1.2 : frameThicknessValue;
 
             if (isNaN(power) || isNaN(diameter) || isNaN(minThick)) {
-                alert("Please fill in all Thickness fields.");
+                alert("Please fill in all required Thickness fields.");
                 return;
             }
 
-            let r = diameter / 2;
+            // Sagittal Depth Formula adjusted for Decentration
+            let r = (diameter / 2) + Math.abs(dec);
             let sag = (Math.pow(r, 2) * Math.abs(power)) / (2000 * (n - 1));
             let finalThickness = sag + minThick;
 
@@ -455,13 +462,12 @@
             let lensType = isPlus ? "Center Thickness (Plus Lens)" : "Edge Thickness (Minus Lens)";
 
             if (event && event.type !== "click") { } else {
-                addReceiptItem(`Thickness Calc: ${power}D, Index ${n}, Ø${diameter}mm`);
+                addReceiptItem(`Thickness Calc: ${power}D, Index ${n}, Ø${diameter}mm, Dec: ${dec}mm`);
                 addReceiptItem(`--> Est. ${lensType}: ${finalThickness.toFixed(2)}mm`);
             }
 
             let maxThickness = finalThickness;
 
-            // Pass RAW value for distinct drawing
             drawHumanProfileVisualizer(maxThickness, frameThickMm, frameThicknessValue, isPlus);
         }
 
@@ -472,12 +478,10 @@
 
             const isDark = document.body.classList.contains('dark-mode');
 
-            // Setup visual distinct flags based on raw input value
             const isSemi = (frameTypeRaw === 1.21);
             const isZyl = (frameTypeRaw === 2.5);
             const isDrill = (frameThickMm === 0);
 
-            // Apply Pip-Boy colors when in dark mode
             const faceColor = isDark ? '#1aff80' : '#555555';
             const lensColor = isDark ? 'rgba(26, 255, 128, 0.15)' : 'rgba(0, 150, 255, 0.4)';
             const lensOutline = isDark ? '#1aff80' : '#0066cc';
@@ -485,11 +489,9 @@
             const templeColor = isDark ? '#1aff80' : '#444444';
             const textColor = isDark ? '#1aff80' : '#000000';
 
-            // Error/Highlight colors
             const warnColor = isDark ? '#ff4d4d' : '#cc0000';
             const okColor = isDark ? '#1aff80' : '#008800';
 
-            // Glow effect for Pip-Boy mode
             if (isDark) {
                 ctx.shadowBlur = 4;
                 ctx.shadowColor = '#1aff80';
@@ -497,7 +499,7 @@
                 ctx.shadowBlur = 0;
             }
 
-            // 1. Draw Face Outline
+            // Face Outline
             ctx.beginPath();
             ctx.moveTo(220, 20);
             ctx.bezierCurveTo(230, 50, 220, 80, 200, 100);
@@ -511,7 +513,7 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Draw Eye
+            // Eye
             ctx.beginPath();
             ctx.ellipse(170, 105, 12, 6, 0, 0, Math.PI * 2);
             ctx.stroke();
@@ -520,7 +522,6 @@
             ctx.fillStyle = faceColor;
             ctx.fill();
 
-            // 2. Setup Measurement Scales
             const scale = 5;
             let lensThickPx = maxThickness * scale;
             let frameThickPx = frameThickMm * scale;
@@ -530,7 +531,7 @@
             let lensHeight = 90;
             let backX = frontX - lensThickPx;
 
-            // 3. Draw Lens Cross-Section
+            // Lens Cross-Section
             ctx.fillStyle = lensColor;
             ctx.strokeStyle = lensOutline;
             ctx.lineWidth = 1;
@@ -544,50 +545,41 @@
             ctx.fill();
             ctx.stroke();
 
-            // 4. Draw Frame & Temple (MATERIAL SPECIFIC DRAWING ON FACE)
+            // Frame Details
             if (isDrill) {
-                // Drill hardware post and screw simulation
                 ctx.fillStyle = isDark ? '#1aff80' : '#888888';
-                ctx.fillRect(frontX - lensThickPx - 2, topY + 20, lensThickPx + 4, 6); // Post
-                // Hardware dots
+                ctx.fillRect(frontX - lensThickPx - 2, topY + 20, lensThickPx + 4, 6);
                 ctx.fillStyle = isDark ? 'white' : 'black';
-                ctx.beginPath(); ctx.arc(frontX + 2, topY + 23, 1.5, 0, Math.PI * 2); ctx.fill(); // Front hardware
-                ctx.beginPath(); ctx.arc(backX - 2, topY + 23, 1.5, 0, Math.PI * 2); ctx.fill(); // Back hardware
+                ctx.beginPath(); ctx.arc(frontX + 2, topY + 23, 1.5, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(backX - 2, topY + 23, 1.5, 0, Math.PI * 2); ctx.fill();
 
                 ctx.fillStyle = templeColor;
-                ctx.fillRect(50, topY + 20, backX - 50, 4); // Temple attach further back
+                ctx.fillRect(50, topY + 20, backX - 50, 4);
             } else {
                 ctx.fillStyle = frameColor;
 
                 if (isZyl) {
-                    // REDESIGNED THIN-PROFILE ZYL: Significant reduction in global bezel from generic 2px to refined 0.5px
-                    // It still keeps the 2.5mm bulk, but draws closer to the lens edge.
                     ctx.beginPath();
-                    ctx.moveTo(frontX + 0.5, topY - 0.5); // reduced global bezel
+                    ctx.moveTo(frontX + 0.5, topY - 0.5);
                     ctx.lineTo(frontX + 0.5, topY + lensHeight + 0.5);
                     ctx.lineTo(frontX - frameThickPx, topY + lensHeight + 0.5);
                     ctx.lineTo(frontX - frameThickPx, topY - 0.5);
                     ctx.closePath();
                     ctx.fill();
 
-                    // Redraw temple (thickness visual, aligns with frame back)
                     ctx.fillStyle = templeColor;
                     ctx.fillRect(50, topY + 15, frontX - frameThickPx - 50, isDark ? 4 : 6);
 
                 } else if (isSemi) {
-                    // Top Bar only + Cord indication
-                    ctx.fillRect(frontX - frameThickPx - 1, topY - 2, lensThickPx + frameThickPx + 2, 4); // Top bar
+                    ctx.fillRect(frontX - frameThickPx - 1, topY - 2, lensThickPx + frameThickPx + 2, 4);
 
-                    // Nylon cord representation (thin line under lens)
                     ctx.strokeStyle = frameColor; ctx.lineWidth = 1;
                     ctx.beginPath(); ctx.moveTo(backX, topY + lensHeight + 0.5); ctx.lineTo(frontX, topY + lensHeight + 0.5); ctx.stroke();
 
                     ctx.fillStyle = templeColor;
                     ctx.fillRect(50, topY + 15, backX - 50, isDark ? 4 : 6);
 
-                } else { // metal 1.2
-                    // Basic Metal (thin metal wire style)
-                    // Use stroke, not fill blocks
+                } else {
                     ctx.strokeStyle = frameColor;
                     ctx.lineWidth = 1.5;
                     ctx.strokeRect(frontX - frameThickPx, topY - 1, frameThickPx + 1, lensHeight + 2);
@@ -597,7 +589,7 @@
                 }
             }
 
-            // 5. Patient Data Labels
+            // Data Labels
             let exposedMm = Math.max(0, maxThickness - frameThickMm).toFixed(2);
 
             ctx.fillStyle = textColor;
@@ -613,10 +605,10 @@
             ctx.font = isDark ? "bold 15px 'Courier New'" : "bold 15px Arial";
             ctx.fillText(`Exposed Lens: ${exposedMm} mm`, 15, 68);
 
-            // Draw precision measurement lines
+            // Measurement Lines
             if (exposedMm > 0 && !isDrill) {
                 ctx.strokeStyle = ctx.fillStyle;
-                ctx.lineWidth = 1; // Thinner drafting lines
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(frontX - frameThickPx, topY + lensHeight + 10);
                 ctx.lineTo(backX, topY + lensHeight + 10);
@@ -630,7 +622,6 @@
                 ctx.stroke();
             }
 
-            // Reset shadow for next draw
             ctx.shadowBlur = 0;
         }
 
