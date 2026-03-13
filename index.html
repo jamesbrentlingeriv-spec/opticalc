@@ -19,7 +19,7 @@
             --border: #cccccc;
         }
 
-        /* Pip-Boy Terminal Dark Mode */
+        /* --- Theme 2: Pip-Boy Terminal Dark Mode --- */
         body.dark-mode {
             --bg-color: #000000;
             --text-color: #1aff80;
@@ -32,15 +32,6 @@
 
             font-family: 'Courier New', Courier, monospace;
             text-shadow: 0 0 2px #1aff80;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         body.dark-mode input,
@@ -66,6 +57,100 @@
         body.dark-mode .keypad button.special {
             background-color: #003300;
             color: #1aff80;
+        }
+
+        /* --- Theme 3: Modern 3D Rainbow (Glassmorphism) --- */
+        body.rainbow-mode {
+            --text-color: #2d3436;
+            --btn-text: #ffffff;
+            --border: rgba(255, 255, 255, 0.4);
+
+            /* Animated gradient background */
+            background: linear-gradient(120deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb, #ffb199);
+            background-size: 300% 300%;
+            animation: rainbowBg 12s ease infinite;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        @keyframes rainbowBg {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Frosted Glass Effect */
+        body.rainbow-mode .calculator,
+        body.rainbow-mode .optician-tools,
+        body.rainbow-mode .receipt-section {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 2px 2px rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+        }
+
+        body.rainbow-mode #display,
+        body.rainbow-mode input,
+        body.rainbow-mode select,
+        body.rainbow-mode .receipt-roll {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            color: #2d3436;
+        }
+
+        body.rainbow-mode .receipt-roll {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        /* 3D Gradient Buttons */
+        body.rainbow-mode .keypad button,
+        body.rainbow-mode .calc-btn,
+        body.rainbow-mode header button {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border: none;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        body.rainbow-mode .keypad button.special {
+            background: linear-gradient(135deg, #ff7675, #fab1a0);
+            box-shadow: 0 4px 10px rgba(255, 118, 117, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        body.rainbow-mode .calc-btn {
+            background: linear-gradient(135deg, #00b894, #55efc4);
+            box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        body.rainbow-mode .keypad button:active,
+        body.rainbow-mode .calc-btn:active,
+        body.rainbow-mode header button:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- Base Layout Styles --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         header {
@@ -105,9 +190,9 @@
             padding: 20px;
             border-radius: 8px;
             border: 1px solid var(--border);
+            transition: all 0.3s;
         }
 
-        /* Calculator Styles */
         #display {
             width: 100%;
             height: 90px;
@@ -120,6 +205,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             resize: none;
+            transition: all 0.3s;
         }
 
         .keypad {
@@ -148,7 +234,6 @@
             color: white;
         }
 
-        /* Optician Forms */
         .form-group {
             margin-bottom: 10px;
         }
@@ -167,6 +252,7 @@
             border: 1px solid var(--border);
             background-color: var(--bg-color);
             color: var(--text-color);
+            transition: all 0.3s;
         }
 
         .calc-btn {
@@ -184,7 +270,6 @@
             background-color: var(--btn-hover);
         }
 
-        /* Receipt Styles */
         .receipt-roll {
             background-color: var(--receipt-bg);
             border: 1px dashed var(--border);
@@ -193,9 +278,9 @@
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
             color: var(--text-color);
+            transition: all 0.3s;
         }
 
-        /* Print Media Query */
         @media print {
             body * {
                 visibility: hidden;
@@ -214,6 +299,8 @@
                 margin: 0;
                 padding: 0;
                 border: none;
+                box-shadow: none;
+                background: white;
             }
 
             .receipt-roll {
@@ -221,6 +308,7 @@
                 border: none;
                 overflow: visible;
                 box-shadow: none;
+                background: white;
             }
 
             header,
@@ -244,7 +332,7 @@
     <header>
         <h2>Optician Calculator</h2>
         <div>
-            <button onclick="toggleTheme()">Toggle Pip-Boy / Light Mode</button>
+            <button onclick="toggleTheme()">Toggle Theme</button>
             <button onclick="window.print()">Print Session</button>
         </div>
     </header>
@@ -292,6 +380,23 @@
 
         <div class="optician-tools">
             <h3>Optician Formulas</h3>
+
+            <h4>Decentration (Per Eye)</h4>
+            <div class="form-group">
+                <label>Frame A Measurement (mm):</label>
+                <input type="number" id="frameA" step="0.1">
+            </div>
+            <div class="form-group">
+                <label>Bridge / DBL (mm):</label>
+                <input type="number" id="bridge" step="0.1">
+            </div>
+            <div class="form-group">
+                <label>Binocular Patient PD (mm):</label>
+                <input type="number" id="decPatientPd" step="0.1">
+            </div>
+            <button class="calc-btn" onclick="calcDecentration()">Calculate Decentration</button>
+
+            <hr style="margin: 20px 0; border-color: var(--border);">
 
             <h4>Minimum Blank Size (MBS)</h4>
             <div class="form-group">
@@ -351,7 +456,7 @@
 
             <div style="margin-top: 15px; text-align: center;">
                 <canvas id="lensProfile" width="400" height="300"
-                    style="max-width: 100%; border: 1px solid var(--border); background-color: var(--calc-bg); border-radius: 4px;"></canvas>
+                    style="max-width: 100%; border: 1px solid var(--border); border-radius: 8px; transition: all 0.3s;"></canvas>
             </div>
         </div>
 
@@ -371,8 +476,25 @@
                 .catch(err => console.error("Service Worker Failed", err));
         }
 
+        // Theme Cycler Logic
+        const themes = ['', 'dark-mode', 'rainbow-mode'];
+        let currentThemeIndex = 0;
+
         function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
+            // Remove current theme class
+            if (themes[currentThemeIndex] !== '') {
+                document.body.classList.remove(themes[currentThemeIndex]);
+            }
+
+            // Advance to next theme
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+
+            // Apply new theme class
+            if (themes[currentThemeIndex] !== '') {
+                document.body.classList.add(themes[currentThemeIndex]);
+            }
+
+            // Re-render canvas to match new theme colors
             let power = parseFloat(document.getElementById('power').value);
             if (!isNaN(power)) { calcThickness(); }
         }
@@ -424,6 +546,26 @@
             isMultilineDisplay = true;
         }
 
+        function calcDecentration() {
+            let a = parseFloat(document.getElementById('frameA').value);
+            let bridge = parseFloat(document.getElementById('bridge').value);
+            let pd = parseFloat(document.getElementById('decPatientPd').value);
+
+            if (isNaN(a) || isNaN(bridge) || isNaN(pd)) {
+                alert("Please fill in all Decentration fields.");
+                return;
+            }
+
+            let framePd = a + bridge;
+            let decentrationPerEye = (framePd - pd) / 2;
+
+            addReceiptItem(`Decentration: (A:${a} + DBL:${bridge} - PD:${pd}) / 2 = ${decentrationPerEye.toFixed(2)}mm`);
+
+            document.getElementById('decentration').value = Math.abs(decentrationPerEye).toFixed(2);
+            document.getElementById('framePd').value = framePd.toFixed(1);
+            document.getElementById('patientPd').value = pd.toFixed(1);
+        }
+
         function calcMBS() {
             let ed = parseFloat(document.getElementById('ed').value);
             let framePd = parseFloat(document.getElementById('framePd').value);
@@ -453,7 +595,6 @@
                 return;
             }
 
-            // Sagittal Depth Formula adjusted for Decentration
             let r = (diameter / 2) + Math.abs(dec);
             let sag = (Math.pow(r, 2) * Math.abs(power)) / (2000 * (n - 1));
             let finalThickness = sag + minThick;
@@ -477,25 +618,47 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const isDark = document.body.classList.contains('dark-mode');
+            const isRainbow = document.body.classList.contains('rainbow-mode');
 
             const isSemi = (frameTypeRaw === 1.21);
             const isZyl = (frameTypeRaw === 2.5);
             const isDrill = (frameThickMm === 0);
 
-            const faceColor = isDark ? '#1aff80' : '#555555';
-            const lensColor = isDark ? 'rgba(26, 255, 128, 0.15)' : 'rgba(0, 150, 255, 0.4)';
-            const lensOutline = isDark ? '#1aff80' : '#0066cc';
-            const frameColor = isDark ? '#1aff80' : '#222222';
-            const templeColor = isDark ? '#1aff80' : '#444444';
-            const textColor = isDark ? '#1aff80' : '#000000';
-
-            const warnColor = isDark ? '#ff4d4d' : '#cc0000';
-            const okColor = isDark ? '#1aff80' : '#008800';
+            // Canvas Theme Colors
+            let faceColor, lensColor, lensOutline, frameColor, templeColor, textColor, warnColor, okColor;
 
             if (isDark) {
+                faceColor = '#1aff80';
+                lensColor = 'rgba(26, 255, 128, 0.15)';
+                lensOutline = '#1aff80';
+                frameColor = '#1aff80';
+                templeColor = '#1aff80';
+                textColor = '#1aff80';
+                warnColor = '#ff4d4d';
+                okColor = '#1aff80';
                 ctx.shadowBlur = 4;
                 ctx.shadowColor = '#1aff80';
+            } else if (isRainbow) {
+                faceColor = '#ff6b81'; // Vibrant Coral Face
+                lensColor = 'rgba(29, 209, 161, 0.3)'; // Mint transparent
+                lensOutline = '#1dd1a1';
+                frameColor = '#5f27cd'; // Deep Purple Frame
+                templeColor = '#341f97';
+                textColor = '#2d3436';
+                warnColor = '#e84118';
+                okColor = '#00a8ff';
+                ctx.shadowBlur = 6;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
             } else {
+                // Light mode
+                faceColor = '#555555';
+                lensColor = 'rgba(0, 150, 255, 0.4)';
+                lensOutline = '#0066cc';
+                frameColor = '#222222';
+                templeColor = '#444444';
+                textColor = '#000000';
+                warnColor = '#cc0000';
+                okColor = '#008800';
                 ctx.shadowBlur = 0;
             }
 
@@ -547,9 +710,9 @@
 
             // Frame Details
             if (isDrill) {
-                ctx.fillStyle = isDark ? '#1aff80' : '#888888';
+                ctx.fillStyle = (isDark || isRainbow) ? lensOutline : '#888888';
                 ctx.fillRect(frontX - lensThickPx - 2, topY + 20, lensThickPx + 4, 6);
-                ctx.fillStyle = isDark ? 'white' : 'black';
+                ctx.fillStyle = isDark ? 'white' : (isRainbow ? '#fff' : 'black');
                 ctx.beginPath(); ctx.arc(frontX + 2, topY + 23, 1.5, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(backX - 2, topY + 23, 1.5, 0, Math.PI * 2); ctx.fill();
 
@@ -568,7 +731,7 @@
                     ctx.fill();
 
                     ctx.fillStyle = templeColor;
-                    ctx.fillRect(50, topY + 15, frontX - frameThickPx - 50, isDark ? 4 : 6);
+                    ctx.fillRect(50, topY + 15, frontX - frameThickPx - 50, (isDark || isRainbow) ? 4 : 6);
 
                 } else if (isSemi) {
                     ctx.fillRect(frontX - frameThickPx - 1, topY - 2, lensThickPx + frameThickPx + 2, 4);
@@ -577,7 +740,7 @@
                     ctx.beginPath(); ctx.moveTo(backX, topY + lensHeight + 0.5); ctx.lineTo(frontX, topY + lensHeight + 0.5); ctx.stroke();
 
                     ctx.fillStyle = templeColor;
-                    ctx.fillRect(50, topY + 15, backX - 50, isDark ? 4 : 6);
+                    ctx.fillRect(50, topY + 15, backX - 50, (isDark || isRainbow) ? 4 : 6);
 
                 } else {
                     ctx.strokeStyle = frameColor;
@@ -585,7 +748,7 @@
                     ctx.strokeRect(frontX - frameThickPx, topY - 1, frameThickPx + 1, lensHeight + 2);
 
                     ctx.fillStyle = templeColor;
-                    ctx.fillRect(50, topY + 15, backX - 50, isDark ? 4 : 6);
+                    ctx.fillRect(50, topY + 15, backX - 50, (isDark || isRainbow) ? 4 : 6);
                 }
             }
 
@@ -600,7 +763,10 @@
 
             if (isDark && exposedMm > 0) {
                 ctx.shadowColor = warnColor;
+            } else if (isRainbow) {
+                ctx.shadowColor = 'transparent';
             }
+
             ctx.fillStyle = (exposedMm > 0) ? warnColor : okColor;
             ctx.font = isDark ? "bold 15px 'Courier New'" : "bold 15px Arial";
             ctx.fillText(`Exposed Lens: ${exposedMm} mm`, 15, 68);
