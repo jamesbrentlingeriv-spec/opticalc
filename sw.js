@@ -1,5 +1,12 @@
 const CACHE_NAME = "optical-calc-v1";
-const urlsToCache = ["./index.html", "./manifest.json"];
+const urlsToCache = [
+  "./index.html",
+  "./manifest.json",
+  "./manifesr.json",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./sw.js",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

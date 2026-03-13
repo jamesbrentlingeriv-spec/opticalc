@@ -1,13 +1,11 @@
-# Opticalc Logo and Splash Implementation
+# Opticalc Enhancements
 
-## Steps to Complete:
+## Completed:
 
-- [ ] Step 1: Add CSS styles for fixed logo (icon-192.png) in top-left and
-      full-screen splash overlay (icon-512.png)
-- [ ] Step 2: Add HTML elements for logo and splash div in index.html
-- [ ] Step 3: Add JavaScript logic for splash screen (check sessionStorage, show
-      2s on first load, fade out)
-- [ ] Step 4: Verify theme compatibility for new elements
-- [ ] Step 5: Test implementation and complete task
+- Logo (icon-192.png) top-left
+- Splash screen (icon-512.png) white background 2s first load
+- Crown Glass (1.523) added to lens materials
+- Thickness canvas now prints with session receipt (black border, full size)
 
-Current progress: Starting implementation...
+All enhancements complete. Logo adjusted not to overlap title (added margin-top
+to header).
